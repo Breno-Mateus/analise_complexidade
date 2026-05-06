@@ -5,15 +5,56 @@
 #include <cstdlib>
 #include <ctime>
 
+void verificarCrescimento(const std::vector<int>& tamanhos, const std::vector<double>& tempos) {
+  if (tamanhos.size() < 2) return;
+
+  double somaTaxasCrescimento = 0;
+  int intervalos = 0;
+
+  //lógica para calcular a taxa de crescimento média entre os pontos consecutivos
+  for (size_t i = 1; i < tamanhos.size(); i++) {
+    double n1 = tamanhos[i-1];
+    double n2 = tamanhos[i];
+    double t1 = tempos[i-1];
+    double t2 = tempos[i];
+
+    if (t1 > 0.0001) {
+      double razaoN = n2 / n1;
+      double razaoT = t2 / t1;
+      
+      somaTaxasCrescimento += (razaoT / razaoN);
+      intervalos++;
+    }
+  }
+
+  double taxaMedia = somaTaxasCrescimento / intervalos;
+
+  std::cout << "\n>>> ANÁLISE DE VARIAÇÃO MÉDIA <<<" << std::endl;
+  std::cout << "Taxa de aceleração média: " << taxaMedia << std::endl;
+
+  if (taxaMedia >= 1.6) {
+    std::cout << "Resultado: Melhor ajuste QUADRÁTICO O(n^2)" << std::endl;
+  } 
+  else if (taxaMedia > 1.05) {
+    std::cout << "Resultado: Melhor ajuste LOG-LINEAR O(n log n)" << std::endl;
+} 
+  else if (taxaMedia >= 0.9) {
+    std::cout << "Resultado: Melhor ajuste LINEAR O(n)" << std::endl;
+  } 
+  else {
+    std::cout << "Resultado: Melhor ajuste LOGARÍTMICO O(log n)" << std::endl;
+  }
+}
+
 void realizarExperimento(AlgoritmoOrdenacao algoritmo, std::string nomeAlgoritmo, std::vector<int> tamanhos, int repeticoes) {
   std::cout << "\n--- Iniciando Experimento: " << nomeAlgoritmo << " ---" << std::endl;
   std::cout << "n\t\t| Tempo Médio (ms)" << std::endl;
   std::cout << "------------------------------------" << std::endl;
 
-  double t1 = 0.0, t2 = 0.0;
-
   // Configura a semente do gerador uma única vez usando o relógio atual
-  srand(time(NULL)); 
+  srand(time(NULL));
+
+  std::vector<double> tempos(tamanhos.size());
 
   for (int i = 0; i < (int)tamanhos.size(); i++) {
     int n = tamanhos[i];
@@ -39,34 +80,9 @@ void realizarExperimento(AlgoritmoOrdenacao algoritmo, std::string nomeAlgoritmo
     // Calcula o tempo médio e exibe os resultados
     double tempoMedio = somaTempos / repeticoes;
     std::cout << n << "\t\t| " << tempoMedio << " ms" << std::endl;
-
-    if(i == (int)tamanhos.size() - 2) {
-      t1 = tempoMedio;
-    } else if(i == (int)tamanhos.size() - 1) {
-      t2 = tempoMedio;
-    }
+    tempos[i] = tempoMedio;
   }
-    
+
   std::cout << "------------------------------------" << std::endl;
-
-  verificarCrescimento(t1, t2);
-}
-
-
-void verificarCrescimento(double t1, double t2) {
-  double razaoEntrada = 2;
-  double razaoTempo = t2 / t1;
-
-  std::cout << "A entrada cresceu " << razaoEntrada << " vezes." << std::endl;
-  std::cout << "O tempo cresceu " << razaoTempo << " vezes." << std::endl;
-
-  if (razaoTempo <= (razaoEntrada * 1.2) && razaoTempo >= (razaoEntrada * 0.8)) {
-    std::cout << "Parece LINEAR O(n) - (Tempo acompanhou a entrada)" << std::endl;
-  } 
-  else if (razaoTempo >= (razaoEntrada * razaoEntrada * 0.8)) {
-    std::cout << "Parece QUADRATICO O(n^2) - (Tempo cresceu ao quadrado)" << std::endl;
-  } 
-  else if (razaoTempo < razaoEntrada) {
-    std::cout << "Parece LOGARITMICO O(log n) - (Cresceu muito devagar)" << std::endl;
-  }
+  verificarCrescimento(tamanhos, tempos);
 }

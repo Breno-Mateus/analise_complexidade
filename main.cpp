@@ -6,6 +6,7 @@ int main() {
 
   realizarExperimento(insertionSort, "InsertionSort", tamanhos, 10);
   realizarExperimento(selectionSort, "SelectionSort", tamanhos, 10);
+  realizarExperimento(mergeSort, "MergeSort", tamanhos, 10);
 
   return 0;
 }
