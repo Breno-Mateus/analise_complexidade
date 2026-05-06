@@ -10,6 +10,8 @@ void realizarExperimento(AlgoritmoOrdenacao algoritmo, std::string nomeAlgoritmo
   std::cout << "n\t\t| Tempo Médio (ms)" << std::endl;
   std::cout << "------------------------------------" << std::endl;
 
+  double t1 = 0.0, t2 = 0.0;
+
   // Configura a semente do gerador uma única vez usando o relógio atual
   srand(time(NULL)); 
 
@@ -37,9 +39,17 @@ void realizarExperimento(AlgoritmoOrdenacao algoritmo, std::string nomeAlgoritmo
     // Calcula o tempo médio e exibe os resultados
     double tempoMedio = somaTempos / repeticoes;
     std::cout << n << "\t\t| " << tempoMedio << " ms" << std::endl;
+
+    if(i == (int)tamanhos.size() - 2) {
+      t1 = tempoMedio;
+    } else if(i == (int)tamanhos.size() - 1) {
+      t2 = tempoMedio;
+    }
   }
     
   std::cout << "------------------------------------" << std::endl;
+
+  verificarCrescimento(t1, t2);
 }
 
 
