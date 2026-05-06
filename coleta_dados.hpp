@@ -6,8 +6,8 @@
 
 typedef void (*AlgoritmoOrdenacao)(std::vector<int>&);
 
-void realizarExperimento(AlgoritmoOrdenacao alg, std::string nomeAlg, std::vector<int> tamanhos, int repeticoes);
+void realizarExperimento(AlgoritmoOrdenacao algoritmo, std::string nomeAlgoritmo, std::vector<int> tamanhos, int repeticoes);
 
-void verificarCrescimento(int n1, double t1, int n2, double t2);
+void verificarCrescimento(double t1, double t2);
 
 #endif
