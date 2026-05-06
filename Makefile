@@ -1,18 +1,17 @@
-CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++11
-TARGET = programa_analise
-
-$(TARGET): main.o coleta_dados.o algoritmos.o
-	$(CXX) $(CXXFLAGS) -o $(TARGET) main.o coleta_dados.o algoritmos.o
+programa_analise: main.o coleta_dados.o algoritmos.o
+	g++ -Wall -std=c++17 main.o coleta_dados.o algoritmos.o -o programa_analise
 
 main.o: main.cpp coleta_dados.hpp algoritmos.hpp
-	$(CXX) $(CXXFLAGS) -c main.cpp
+	g++ -Wall -std=c++17 -c main.cpp
 
 coleta_dados.o: coleta_dados.cpp coleta_dados.hpp
-	$(CXX) $(CXXFLAGS) -c coleta_dados.cpp
+	g++ -Wall -std=c++17 -c coleta_dados.cpp
 
 algoritmos.o: algoritmos.cpp algoritmos.hpp
-	$(CXX) $(CXXFLAGS) -c algoritmos.cpp
+	g++ -Wall -std=c++17 -c algoritmos.cpp
+
+test: programa_analise
+	./programa_analise
 
 clean:
-	rm -f *.o $(TARGET)
+	rm -f *.o programa_analise

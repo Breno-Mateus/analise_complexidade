@@ -37,3 +37,22 @@ void realizarExperimento(AlgoritmoOrdenacao alg, std::string nomeAlg, std::vecto
       
   std::cout << "------------------------------------" << std::endl;
 }
+
+
+void verificarCrescimento(int n1, double t1, int n2, double t2) {
+  double razaoEntrada = (double)n2 / n1;
+  double razaoTempo = t2 / t1;
+
+  std::cout << "A entrada cresceu " << razaoEntrada << " vezes." << std::endl;
+  std::cout << "O tempo cresceu " << razaoTempo << " vezes." << std::endl;
+
+  if (razaoTempo <= (razaoEntrada * 1.2) && razaoTempo >= (razaoEntrada * 0.8)) {
+    std::cout << "Parece LINEAR O(n) - (Tempo acompanhou a entrada)" << std::endl;
+  } 
+  else if (razaoTempo >= (razaoEntrada * razaoEntrada * 0.8)) {
+    std::cout << "Parece QUADRATICO O(n^2) - (Tempo cresceu ao quadrado)" << std::endl;
+  } 
+  else if (razaoTempo < razaoEntrada) {
+    std::cout << "Parece LOGARITMICO O(log n) - (Cresceu muito devagar)" << std::endl;
+  }
+}
