@@ -46,7 +46,7 @@ void verificarCrescimento(const std::vector<int>& tamanhos, const std::vector<do
   }
 }
 
-void realizarExperimento(AlgoritmoOrdenacao algoritmo, std::string nomeAlgoritmo, std::vector<int> tamanhos, int repeticoes) {
+void realizarExperimentoOrdenacao(AlgoritmoOrdenacao algoritmo, std::string nomeAlgoritmo, std::vector<int> tamanhos, int repeticoes) {
   std::cout << "\n--- Iniciando Experimento: " << nomeAlgoritmo << " ---" << std::endl;
   std::cout << "n\t\t| Tempo Médio (ms)" << std::endl;
   std::cout << "------------------------------------" << std::endl;
@@ -85,4 +85,44 @@ void realizarExperimento(AlgoritmoOrdenacao algoritmo, std::string nomeAlgoritmo
 
   std::cout << "------------------------------------" << std::endl;
   verificarCrescimento(tamanhos, tempos);
+}
+
+void realizarExperimentoBusca(AlgoritmoBusca algoritmo, std::string nomeAlgoritmo, std::vector<int> tamanhos, int repeticoes) {
+    std::cout << "\n--- Iniciando Experimento de Busca: " << nomeAlgoritmo << " ---" << std::endl;
+    std::cout << "n\t\t| Tempo Médio (ms)" << std::endl;
+    std::cout << "------------------------------------" << std::endl;
+
+    srand(time(NULL));
+    std::vector<double> tempos(tamanhos.size());
+
+    for (int i = 0; i < (int)tamanhos.size(); i++) {
+        int n = tamanhos[i];
+        
+        // cria um vetor com números pares ordenados
+        std::vector<int> vetor(n);
+        for (int j = 0; j < n; j++) {
+            vetor[j] = j * 2;
+        }
+
+        double somaTempos = 0.0;
+
+        for (int r = 0; r < repeticoes; r++) {
+            // escolhe um alvo aleatório
+            int alvo = rand() % (n * 2);
+
+            auto inicio = std::chrono::high_resolution_clock::now();
+            algoritmo(vetor, alvo);
+            auto fim = std::chrono::high_resolution_clock::now();
+
+            std::chrono::duration<double, std::milli> duracao = fim - inicio;
+            somaTempos += duracao.count();
+        }
+
+        double tempoMedio = somaTempos / repeticoes;
+        std::cout << n << "\t\t| " << tempoMedio << " ms" << std::endl;
+        tempos[i] = tempoMedio;
+    }
+
+    std::cout << "------------------------------------" << std::endl;
+    verificarCrescimento(tamanhos, tempos);
 }

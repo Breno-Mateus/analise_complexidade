@@ -5,9 +5,12 @@
 #include <string>
 
 typedef void (*AlgoritmoOrdenacao)(std::vector<int>&);
+typedef int (*AlgoritmoBusca)(const std::vector<int>&, int);
 
-void realizarExperimento(AlgoritmoOrdenacao algoritmo, std::string nomeAlgoritmo, std::vector<int> tamanhos, int repeticoes);
+void realizarExperimentoOrdenacao(AlgoritmoOrdenacao algoritmo, std::string nomeAlgoritmo, std::vector<int> tamanhos, int repeticoes);
 
-void verificarCrescimento(double t1, double t2);
+void realizarExperimentoBusca(AlgoritmoBusca algoritmo, std::string nomeAlgoritmo, std::vector<int> tamanhos, int repeticoes);
+
+void verificarCrescimento(const std::vector<int>& tamanhos, const std::vector<double>& tempos);
 
 #endif
